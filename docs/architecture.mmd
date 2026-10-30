@@ -1,0 +1,24 @@
+flowchart TB
+    userClient["用户：提交任务 / 查看结果"]
+    subgraph localApp["应用所在机器"]
+        subgraph pythonApp["Python 应用：同一进程内的模块"]
+            ui["Streamlit · app.py"]
+            runtime["任务入口 · runtime.py：会话生命周期 / 超时 / 更新回调"]
+            skills["Skill：本地 Markdown 策略 + 关键词匹配"]
+            agentFlow["LangGraph · graph.py：skills → agent ↔ tools"]
+            adapter["工具接入：load_mcp_tools + browser_read_page"]
+            ui <-->|"任务 / 进度与结果"| runtime
+            runtime <-->|"创建并执行图 / 节点更新"| agentFlow
+            skills -.->|"策略正文加入系统消息"| agentFlow
+            agentFlow <-->|"工具调用 / 观察结果"| adapter
+        end
+        mcpProcess["Playwright MCP：Node.js 子进程"]
+        chromium["Chromium：每任务独立浏览器上下文"]
+        adapter <-->|"ClientSession · stdio"| mcpProcess
+        mcpProcess <-->|"浏览器操作 / 页面信息"| chromium
+    end
+    modelApi["在线模型 API：决策 / 工具调用请求 / 回答"]
+    websites["目标网站"]
+    userClient <-->|"Web 界面"| ui
+    agentFlow <-->|"ChatOpenAI · HTTP(S)"| modelApi
+    chromium <-->|"HTTP(S)"| websites

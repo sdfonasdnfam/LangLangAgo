@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="960" viewBox="0 0 1440 960" role="img" aria-labelledby="title desc">
+<title id="title">浏览器 Agent 整体架构</title>
+<desc id="desc">用户通过 Streamlit 提交任务；Python 应用中的任务入口管理会话与 LangGraph。Skill 提供操作策略，在线模型负责决策，MCP 工具通过标准输入输出连接 Node.js 服务并驱动 Chromium 访问目标网站。</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 Z" fill="#64748b"/></marker></defs>
+<style>text{font-family:'Noto Sans CJK SC','Microsoft YaHei',sans-serif;fill:#172b4d}.title{font-size:29px;font-weight:700}.subtitle{font-size:17px;fill:#58677c}.boxTitle{font-size:21px;font-weight:700}.detail{font-size:16px;fill:#42546a}.label{font-size:14px;fill:#52637a}.group{font-size:16px;font-weight:600;fill:#52637a}</style>
+<rect width="1440" height="960" fill="#ffffff"/>
+<text x="40" y="48" class="title">浏览器 Agent · 整体架构</text>
+<text x="40" y="79" class="subtitle">交互 → 策略与决策 → 浏览器执行 → 观察反馈 → 结果</text>
+<rect x="260" y="100" width="840" height="780" rx="18" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="282" y="126" class="group">应用所在机器</text>
+<rect x="280" y="138" width="800" height="555" rx="12" fill="#eff6ff" stroke="#bfdbfe"/>
+<text x="300" y="161" class="label">Python 应用 · 内部模块在同一进程中协作</text>
+
+<rect x="30" y="175" width="190" height="80" rx="10" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="125.0" y="205" class="boxTitle" text-anchor="middle">用户</text>
+<text x="125.0" y="231" class="detail" text-anchor="middle">提交任务 / 看结果</text>
+<rect x="320" y="175" width="720" height="80" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="680.0" y="205" class="boxTitle" text-anchor="middle">Streamlit 交互界面</text>
+<text x="680.0" y="231" class="detail" text-anchor="middle">app.py · 输入配置、任务进度、工具记录、回答与 token 用量</text>
+<rect x="320" y="300" width="720" height="80" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="680.0" y="330" class="boxTitle" text-anchor="middle">任务入口与会话管理</text>
+<text x="680.0" y="356" class="detail" text-anchor="middle">runtime.py · 创建模型和图、维护 MCP 会话、超时与资源释放</text>
+<rect x="320" y="430" width="225" height="110" rx="10" fill="#f0fdf4" stroke="#86c99c" stroke-width="1.5"/>
+<text x="432.5" y="460" class="boxTitle" text-anchor="middle">Skill 策略</text>
+<text x="432.5" y="486" class="detail" text-anchor="middle">skills.py + SKILL.md</text>
+<text x="432.5" y="509" class="detail" text-anchor="middle">关键词匹配 → 策略正文</text>
+<rect x="650" y="430" width="390" height="110" rx="10" fill="#dbeafe" stroke="#7da9e2" stroke-width="1.5"/>
+<text x="845.0" y="460" class="boxTitle" text-anchor="middle">LangGraph 状态与流程</text>
+<text x="845.0" y="486" class="detail" text-anchor="middle">graph.py · skills → agent ↔ tools</text>
+<text x="845.0" y="509" class="detail" text-anchor="middle">保存消息、轮数、状态与结果</text>
+<rect x="320" y="590" width="720" height="75" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="680.0" y="620" class="boxTitle" text-anchor="middle">工具接入与合并读取</text>
+<text x="680.0" y="646" class="detail" text-anchor="middle">load_mcp_tools · browser_read_page（导航 + 读取正文）</text>
+<rect x="320" y="760" width="320" height="85" rx="10" fill="#fff7ed" stroke="#e9c39c" stroke-width="1.5"/>
+<text x="480.0" y="790" class="boxTitle" text-anchor="middle">Playwright MCP</text>
+<text x="480.0" y="816" class="detail" text-anchor="middle">Node.js 子进程 · 提供浏览器工具</text>
+<rect x="750" y="760" width="290" height="85" rx="10" fill="#fff7ed" stroke="#e9c39c" stroke-width="1.5"/>
+<text x="895.0" y="790" class="boxTitle" text-anchor="middle">Chromium 浏览器</text>
+<text x="895.0" y="816" class="detail" text-anchor="middle">每个任务独立上下文</text>
+<rect x="1140" y="430" width="270" height="110" rx="10" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1.5"/>
+<text x="1275.0" y="460" class="boxTitle" text-anchor="middle">在线模型 API</text>
+<text x="1275.0" y="486" class="detail" text-anchor="middle">决策 / 工具调用请求 / 回答</text>
+<text x="1275.0" y="509" class="detail" text-anchor="middle">OpenAI-compatible 接口</text>
+<rect x="1140" y="760" width="270" height="85" rx="10" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1.5"/>
+<text x="1275.0" y="790" class="boxTitle" text-anchor="middle">目标网站</text>
+<text x="1275.0" y="816" class="detail" text-anchor="middle">返回真实页面与操作结果</text>
+<path d="M220,215 L320,215" stroke="#64748b" stroke-width="1.7" fill="none" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+<text x="270" y="205" class="label" text-anchor="middle">Web 界面</text>
+<path d="M680,255 L680,300" stroke="#64748b" stroke-width="1.7" fill="none" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+<text x="775" y="282" class="label" text-anchor="middle">任务 / 进度与结果</text>
+<path d="M845,380 L845,430" stroke="#64748b" stroke-width="1.7" fill="none" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+<text x="943" y="410" class="label" text-anchor="middle">执行图 / 节点更新</text>
+<path d="M545,482 L650,482" stroke="#64748b" stroke-width="1.7" fill="none" marker-end="url(#arrow)" stroke-dasharray="5 5"/>
+<text x="597" y="470" class="label" text-anchor="middle">策略加载</text>
+<path d="M1040,482 L1140,482" stroke="#64748b" stroke-width="1.7" fill="none" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+<text x="1090" y="470" class="label" text-anchor="middle">HTTP(S)</text>
+<path d="M845,540 L845,590" stroke="#64748b" stroke-width="1.7" fill="none" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+<text x="912" y="570" class="label" text-anchor="middle">调用 / 观察</text>
+<path d="M480,665 L480,760" stroke="#64748b" stroke-width="1.7" fill="none" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+<text x="576" y="726" class="label" text-anchor="middle">ClientSession · stdio</text>
+<path d="M640,803 L750,803" stroke="#64748b" stroke-width="1.7" fill="none" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+<text x="695" y="790" class="label" text-anchor="middle">控制 / 返回</text>
+<path d="M1040,803 L1140,803" stroke="#64748b" stroke-width="1.7" fill="none" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+<text x="1090" y="790" class="label" text-anchor="middle">HTTP(S)</text>
+<text x="40" y="917" class="subtitle" text-anchor="start">模型决定做什么，LangGraph 控制执行流程，MCP 驱动浏览器完成操作。</text>
+<text x="40" y="944" class="label" text-anchor="start">双向箭头：请求与返回    虚线：策略加载    蓝色区域：同一 Python 应用的内部模块</text>
+</svg>

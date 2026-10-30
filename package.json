@@ -1,0 +1,6 @@
+{
+  "name": "browser-course-agent",
+  "private": true,
+  "scripts": {"install-browser": "playwright install chromium"},
+  "dependencies": {"@playwright/mcp": "0.0.83"}
+}
